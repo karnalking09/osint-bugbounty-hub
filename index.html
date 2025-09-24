@@ -1,333 +1,603 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>We Are Indian We Are Great — OSINT Tools Index</title>
-  <style>
-    :root{
-      --bg:#0b0b0b; --card:#0f1111; --muted:#9aa0a6; --accent:#06b6d4; --gap:14px;
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    }
-    html,body{height:100%;}
-    body{
-      margin:0; background:linear-gradient(180deg,var(--bg),#071014); color:#e6eef2;
-      padding:32px; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    header{display:flex;align-items:center;gap:18px;margin-bottom:22px}
-    .logo{width:68px;height:68px;border-radius:10px;background:linear-gradient(135deg,#0b1220,#062029);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
-    h1{font-size:20px;margin:0}
-    p.lead{margin:4px 0 0;color:var(--muted)}
-    .container{display:grid;grid-template-columns:1fr 380px;gap:24px}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.6);}
-    .category{margin-bottom:18px}
-    .category h2{font-size:15px;margin:0 0 8px;color:var(--accent)}
-    ul.tools{list-style:none;padding:0;margin:0}
-    li.tool{padding:10px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);display:flex;gap:10px;align-items:flex-start}
-    li.tool a.name{font-weight:600;color:#fff;text-decoration:none}
-    .meta{color:var(--muted);font-size:13px}
-    pre{background:#050606;padding:12px;border-radius:8px;color:#cbd5e1;overflow:auto;font-size:13px}
-    .search{display:flex;gap:8px;margin-bottom:12px}
-    input.searchbox{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#e6eef2}
-    button{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:#051019;font-weight:700}
-    aside .card small{color:var(--muted)}
-    footer{margin-top:18px;color:var(--muted);font-size:13px}
-    code.cmd{background:#061011;padding:3px 6px;border-radius:6px;color:#9fe7ff}
-    @media(max-width:900px){.container{grid-template-columns:1fr}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Tools & Resources Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        .header {
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.1);
+        }
+
+        .header p {
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        .search-container {
+            background: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        #searchInput {
+            padding: 12px 20px;
+            border: 2px solid #333;
+            border-radius: 50px;
+            font-size: 16px;
+            width: 300px;
+            background: #111;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 25px;
+            background: #333;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .category {
+            background: rgba(20, 20, 20, 0.95);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(255,255,255,0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.15);
+            border-color: #667eea;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #333, #444);
+            color: white;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, #444, #667eea);
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .category.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            transition: all 0.5s ease;
+            max-height: 2000px;
+            overflow: hidden;
+        }
+
+        .category.collapsed .tools-grid {
+            max-height: 0;
+            padding: 0 20px;
+        }
+
+        .tool-card {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(102, 126, 234, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            border-left-color: #e74c3c;
+            border-color: #667eea;
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-name {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tool-description {
+            color: #cccccc;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tool-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tool-link:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .stats {
+            background: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+            border: 1px solid #333;
+        }
+
+        .stats h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #333, #444);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #555;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            color: #667eea;
+        }
+
+        .footer {
+            background: rgba(10, 10, 10, 0.9);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-top: 1px solid #333;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            #searchInput {
+                width: 250px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .filter-buttons {
+                margin-top: 10px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">WI</div>
-    <div>
-      <h1>We Are Indian We Are Great — OSINT Tools Index</h1>
-      <p class="lead">Dark theme index page with install links & quick commands. Add or remove tools as you like.</p>
+    <div class="header">
+        <h1>🔐 Bug Bounty Tools & Resources</h1>
+        <p>Comprehensive collection of tools for penetration testing and bug bounty hunting</p>
     </div>
-  </header>
 
-  <div class="container">
-    <main>
-      <div class="card">
-        <div class="search">
-          <input class="searchbox" id="q" placeholder="Search a tool (name or category)..." />
-          <button onclick="doSearch()">Search</button>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search tools... (e.g., subdomain, scanner, XSS)" />
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterCategory('all')">All</button>
+            <button class="filter-btn" onclick="filterCategory('recon')">Recon</button>
+            <button class="filter-btn" onclick="filterCategory('exploitation')">Exploitation</button>
+            <button class="filter-btn" onclick="filterCategory('scanning')">Scanning</button>
+            <button class="filter-btn" onclick="filterCategory('miscellaneous')">Miscellaneous</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <h2>📊 Tools Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalTools">200+</span>
+                    <span>Total Tools</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span>Categories</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span>Open Source</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Free</span>
+                    <span>Access</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Email OSINT -->
-        <section class="category" data-category="email">
-          <h2>Email OSINT & Reputation</h2>
-          <ul class="tools">
-            <li class="tool" data-tags="email breach reputation">
-              <div>
-                <a class="name" href="https://haveibeenpwned.com" target="_blank">HaveIBeenPwned</a>
-                <div class="meta">Breach lookup for email addresses</div>
-                <pre><code>Visit: https://haveibeenpwned.com</code></pre>
-              </div>
-            </li>
-
-            <li class="tool" data-tags="email reputation api">
-              <div>
-                <a class="name" href="https://emailrep.io" target="_blank">Emailrep.io</a>
-                <div class="meta">Email reputation API (threat indicators)</div>
-                <pre><code>curl "https://emailrep.io/<email>" -H "Key: YOUR_KEY"</code></pre>
-              </div>
-            </li>
-
-            <li class="tool" data-tags="email github h8mail">
-              <div>
-                <a class="name" href="https://github.com/khast3x/h8mail" target="_blank">h8mail</a>
-                <div class="meta">Deep breach recon & password harvesting</div>
-                <pre><code>git clone https://github.com/khast3x/h8mail.git
-cd h8mail && pip install -r requirements.txt</code></pre>
-              </div>
-            </li>
-
-            <li class="tool" data-tags="email github ghunt gmail">
-              <div>
-                <a class="name" href="https://github.com/mxrch/GHunt" target="_blank">GHunt</a>
-                <div class="meta">Gmail-focused OSINT (Drive, YouTube, photos)</div>
-                <pre><code>git clone https://github.com/mxrch/GHunt.git
-# follow README for installation</code></pre>
-              </div>
-            </li>
-
-            <li class="tool" data-tags="email footprints epieos">
-              <div>
-                <a class="name" href="https://epieos.com" target="_blank">Epieos</a>
-                <div class="meta">Email/phone footprinting (web)</div>
-                <pre><code>Visit: https://epieos.com</code></pre>
-              </div>
-            </li>
-
-          </ul>
-        </section>
-
-        <!-- Phone OSINT -->
-        <section class="category" data-category="phone">
-          <h2>Phone Number OSINT</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/sundowndev/PhoneInfoga" target="_blank">PhoneInfoga</a>
-                <div class="meta">Phone number recon (carrier, location)</div>
-                <pre><code>git clone https://github.com/sundowndev/PhoneInfoga.git
-cd PhoneInfoga && pip install -r requirements.txt</code></pre>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://www.truecaller.com" target="_blank">Truecaller</a>
-                <div class="meta">Caller ID & spam detection (app/web)</div>
-                <pre><code>Install app from Play Store / visit: https://www.truecaller.com</code></pre>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Username & Social -->
-        <section class="category" data-category="username">
-          <h2>Username & Social Media Discovery</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://whatsmyname.app" target="_blank">WhatsMyName</a>
-                <div class="meta">Search username across many platforms</div>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/sherlock-project/sherlock" target="_blank">Sherlock</a>
-                <div class="meta">CLI username search (~300 sites)</div>
-                <pre><code>git clone https://github.com/sherlock-project/sherlock.git
-python3 -m pip install -r requirements.txt</code></pre>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/soxoj/maigret" target="_blank">Maigret</a>
-                <div class="meta">Sherlock alternative with profile enrichment</div>
-                <pre><code>pipx install maigret
-maigret username</code></pre>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Image & EXIF -->
-        <section class="category" data-category="image">
-          <h2>Image, EXIF & Face Search</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://tineye.com" target="_blank">TinEye</a>
-                <div class="meta">Reverse image search, find origins/edits</div>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://exif.tools" target="_blank">EXIF.tools</a>
-                <div class="meta">View EXIF / metadata including GPS</div>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://fotoforensics.com" target="_blank">FotoForensics</a>
-                <div class="meta">Image tampering checks (ELA)</div>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Website & Domain -->
-        <section class="category" data-category="domain">
-          <h2>Website, Domain & DNS Recon</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/OWASP/Amass" target="_blank">OWASP Amass</a>
-                <div class="meta">In-depth attack surface mapping & subdomain discovery</div>
-                <pre><code>go install -v github.com/OWASP/Amass/v3/...@latest
-amass enum -d example.com</code></pre>
-              </div>
-            </li>
-
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/projectdiscovery/subfinder" target="_blank">subfinder</a>
-                <div class="meta">Fast passive subdomain discovery</div>
-                <pre><code>go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-subfinder -d example.com -o subdomains.txt</code></pre>
-              </div>
-            </li>
-
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/projectdiscovery/dnsx" target="_blank">dnsx</a>
-                <div class="meta">High-performance DNS probing & resolution</div>
-                <pre><code>go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
-cat subs.txt | dnsx -resp</code></pre>
-              </div>
-            </li>
-
-            <li class="tool">
-              <div>
-                <a class="name" href="https://github.com/blechschmidt/massdns" target="_blank">massdns</a>
-                <div class="meta">Bulk DNS resolver for fast lookups</div>
-              </div>
-            </li>
-
-            <li class="tool">
-              <div>
-                <a class="name" href="https://securitytrails.com" target="_blank">SecurityTrails / ViewDNS</a>
-                <div class="meta">WHOIS, reverse IP and DNS tools (web)</div>
-              </div>
-            </li>
-
-          </ul>
-        </section>
-
-        <!-- Shodan & Search Engines -->
-        <section class="category" data-category="searchengines">
-          <h2>OSINT Search Engines & Internet Scan</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://shodan.io" target="_blank">Shodan</a>
-                <div class="meta">Search internet-connected devices & exposed services</div>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://censys.io" target="_blank">Censys</a>
-                <div class="meta">Certificates, hosts and asset mapping</div>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Dark Web & Breach -->
-        <section class="category" data-category="darkweb">
-          <h2>Dark Web & Breach Search</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://dehashed.com" target="_blank">DeHashed</a>
-                <div class="meta">Advanced breach search for emails, IPs, users</div>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://intelx.io" target="_blank">Intelligence X</a>
-                <div class="meta">Search leaks, darknet content and documents</div>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Threat / Malware -->
-        <section class="category" data-category="threat">
-          <h2>Threat Intelligence & Malware</h2>
-          <ul class="tools">
-            <li class="tool">
-              <div>
-                <a class="name" href="https://www.virustotal.com" target="_blank">VirusTotal</a>
-                <div class="meta">Multi-engine scanning for files / URLs</div>
-              </div>
-            </li>
-            <li class="tool">
-              <div>
-                <a class="name" href="https://any.run" target="_blank">ANY.RUN</a>
-                <div class="meta">Interactive malware sandbox (web)</div>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-      </div>
-    </main>
-
-    <aside>
-      <div class="card">
-        <h3 style="margin-top:0">Quick install examples</h3>
-        <small>Use depending on your OS. Many tools need Go, Python or Docker.</small>
-        <div style="margin-top:10px">
-          <pre><code># Go (recommended for many ProjectDiscovery tools)
-# install Go 1.20+, then:
-go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-
-# Git clone + pip
-git clone https://github.com/sherlock-project/sherlock.git
-python3 -m pip install -r sherlock/requirements.txt
-
-# apt (Debian/Ubuntu)
-sudo apt update && sudo apt install nmap git python3-pip -y</code></pre>
+        <!-- Recon Section -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                🔍 Subdomain Enumeration
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">Sublist3r</div>
+                    <div class="tool-description">Fast subdomains enumeration tool for penetration testers</div>
+                    <a href="https://github.com/aboul3la/Sublist3r" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">Amass</div>
+                    <div class="tool-description">In-depth Attack Surface Mapping and Asset Discovery</div>
+                    <a href="https://github.com/OWASP/Amass" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">massdns</div>
+                    <div class="tool-description">High-performance DNS stub resolver for bulk lookups and reconnaissance</div>
+                    <a href="https://github.com/blechschmidt/massdns" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">Findomain</div>
+                    <div class="tool-description">The fastest and cross-platform subdomain enumerator</div>
+                    <a href="https://github.com/Findomain/Findomain" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">Sudomy</div>
+                    <div class="tool-description">Subdomain enumeration tool for automated reconnaissance</div>
+                    <a href="https://github.com/Screetsec/Sudomy" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">chaos-client</div>
+                    <div class="tool-description">Go client to communicate with Chaos DNS API</div>
+                    <a href="https://github.com/projectdiscovery/chaos-client" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">subfinder</div>
+                    <div class="tool-description">Subfinder is a subdomain discovery tool that discovers valid subdomains for websites</div>
+                    <a href="https://github.com/projectdiscovery/subfinder" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">assetfinder</div>
+                    <div class="tool-description">Find domains and subdomains related to a given domain</div>
+                    <a href="https://github.com/tomnomnom/assetfinder" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">altdns</div>
+                    <div class="tool-description">Generates permutations, alterations and mutations of subdomains and then resolves them</div>
+                    <a href="https://github.com/infosec-au/altdns" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">dnsx</div>
+                    <div class="tool-description">Fast and multi-purpose DNS toolkit allow to run multiple DNS queries</div>
+                    <a href="https://github.com/projectdiscovery/dnsx" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">shuffledns</div>
+                    <div class="tool-description">shuffleDNS is a wrapper around massdns written in go for subdomain enumeration</div>
+                    <a href="https://github.com/projectdiscovery/shuffledns" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">crtndstry</div>
+                    <div class="tool-description">Yet another subdomain finder</div>
+                    <a href="https://github.com/nahamsec/crtndstry" class="tool-link" target="_blank">Install / View</a>
+                </div>
+            </div>
         </div>
-        <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
-        <h4>Add more tools</h4>
-        <p class="meta">To add more tools, edit this file and copy a pattern from an existing entry. I can add a CSV/JSON export too.</p>
-      </div>
 
-      <div class="card" style="margin-top:14px">
-        <h4>Notes</h4>
-        <ul class="meta">
-          <li>All links open in a new tab. Verify licenses and use tools only on authorized targets.</li>
-          <li>Some tools have GUI/online counterparts — check official docs for best install method.</li>
-        </ul>
-        <footer>
-          Created for you — modify as you like. — Bhaskar-style OSINT index
-        </footer>
-      </div>
-    </aside>
-  </div>
+        <!-- Port Scanning -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                🌐 Port Scanning
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">masscan</div>
+                    <div class="tool-description">TCP port scanner, spews SYN packets asynchronously, scanning entire Internet in under 5 minutes</div>
+                    <a href="https://github.com/robertdavidgraham/masscan" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">RustScan</div>
+                    <div class="tool-description">The Modern Port Scanner</div>
+                    <a href="https://github.com/RustScan/RustScan" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">naabu</div>
+                    <div class="tool-description">A fast port scanner written in go with focus on reliability and simplicity</div>
+                    <a href="https://github.com/projectdiscovery/naabu" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">nmap</div>
+                    <div class="tool-description">Nmap - the Network Mapper. Github mirror of official SVN repository</div>
+                    <a href="https://github.com/nmap/nmap" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">ScanCannon</div>
+                    <div class="tool-description">Combines the speed of masscan with the reliability and detailed enumeration of nmap</div>
+                    <a href="https://github.com/johnnyxmas/ScanCannon" class="tool-link" target="_blank">Install / View</a>
+                </div>
+            </div>
+        </div>
 
-  <script>
-    function doSearch(){
-      const q=document.getElementById('q').value.toLowerCase();
-      document.querySelectorAll('li.tool').forEach(li=>{
-        const txt = li.innerText.toLowerCase();
-        li.style.display = (q==='' || txt.includes(q)) ? 'flex' : 'none';
-      })
-    }
-  </script>
-</body>
-</html>
+        <!-- Screenshots -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                📸 Screenshots
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">EyeWitness</div>
+                    <div class="tool-description">Take screenshots of websites, provide server header info, and identify default credentials</div>
+                    <a href="https://github.com/FortyNorthSecurity/EyeWitness" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">aquatone</div>
+                    <div class="tool-description">Tool for visual inspection of websites across a large amount of hosts</div>
+                    <a href="https://github.com/michenriksen/aquatone" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">gowitness</div>
+                    <div class="tool-description">gowitness - a golang, web screenshot utility using Chrome Headless</div>
+                    <a href="https://github.com/sensepost/gowitness" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">WitnessMe</div>
+                    <div class="tool-description">Web Inventory tool, takes screenshots using Pyppeteer (headless Chrome/Chromium)</div>
+                    <a href="https://github.com/byt3bl33d3r/WitnessMe" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">screenshoteer</div>
+                    <div class="tool-description">Make website screenshots and mobile emulations from the command line</div>
+                    <a href="https://github.com/vladocar/screenshoteer" class="tool-link" target="_blank">Install / View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technologies -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                ⚙️ Technologies Detection
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">wappalyzer</div>
+                    <div class="tool-description">Identify technology on websites</div>
+                    <a href="https://github.com/AliasIO/wappalyzer" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">webanalyze</div>
+                    <div class="tool-description">Port of Wappalyzer to automate mass scanning</div>
+                    <a href="https://github.com/rverton/webanalyze" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">whatweb</div>
+                    <div class="tool-description">Next generation web scanner</div>
+                    <a href="https://github.com/urbanadventurer/whatweb" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">httpx</div>
+                    <div class="tool-description">Fast and multi-purpose HTTP toolkit</div>
+                    <a href="https://github.com/projectdiscovery/httpx" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">fingerprintx</div>
+                    <div class="tool-description">Standalone utility for service discovery on open ports</div>
+                    <a href="https://github.com/praetorian-inc/fingerprintx" class="tool-link" target="_blank">Install / View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Discovery -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                📂 Content Discovery
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">gobuster</div>
+                    <div class="tool-description">Directory/File, DNS and VHost busting tool written in Go</div>
+                    <a href="https://github.com/OJ/gobuster" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">feroxbuster</div>
+                    <div class="tool-description">A fast, simple, recursive content discovery tool written in Rust</div>
+                    <a href="https://github.com/epi052/feroxbuster" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">dirsearch</div>
+                    <div class="tool-description">Web path scanner</div>
+                    <a href="https://github.com/maurosoria/dirsearch" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">ffuf</div>
+                    <div class="tool-description">Fast web fuzzer written in Go</div>
+                    <a href="https://github.com/ffuf/ffuf" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">gospider</div>
+                    <div class="tool-description">Gospider - Fast web spider written in Go</div>
+                    <a href="https://github.com/jaeles-project/gospider" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">hakrawler</div>
+                    <div class="tool-description">Simple, fast web crawler designed for easy, quick discovery of endpoints</div>
+                    <a href="https://github.com/hakluke/hakrawler" class="tool-link" target="_blank">Install / View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                🔗 Links Discovery
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">LinkFinder</div>
+                    <div class="tool-description">A python script that finds endpoints in JavaScript files</div>
+                    <a href="https://github.com/GerbenJavado/LinkFinder" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">waybackurls</div>
+                    <div class="tool-description">Fetch all the URLs that the Wayback Machine knows about for a domain</div>
+                    <a href="https://github.com/tomnomnom/waybackurls" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">gau</div>
+                    <div class="tool-description">Fetch known URLs from AlienVault's Open Threat Exchange, Wayback Machine</div>
+                    <a href="https://github.com/lc/gau" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">getJS</div>
+                    <div class="tool-description">A tool to fastly get all javascript sources/files</div>
+                    <a href="https://github.com/003random/getJS" class="tool-link" target="_blank">Install / View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="category recon" data-category="recon">
+            <div class="category-header" onclick="toggleCategory(this)">
+                🔍 Parameters Discovery
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">Arjun</div>
+                    <div class="tool-description">HTTP parameter discovery suite</div>
+                    <a href="https://github.com/s0md3v
