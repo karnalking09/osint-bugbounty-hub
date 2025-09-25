@@ -169,18 +169,6 @@
             border: 1px solid #333;
         }
 
-        .tool-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(102, 126, 234, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
         .tool-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
@@ -188,25 +176,17 @@
             border-color: #667eea;
         }
 
-        .tool-card:hover::before {
-            opacity: 1;
-        }
-
         .tool-name {
             font-weight: bold;
             color: #ffffff;
             margin-bottom: 10px;
             font-size: 1.1rem;
-            position: relative;
-            z-index: 1;
         }
 
         .tool-description {
             color: #cccccc;
             margin-bottom: 15px;
             line-height: 1.5;
-            position: relative;
-            z-index: 1;
         }
 
         .tool-link {
@@ -218,8 +198,6 @@
             border-radius: 25px;
             transition: all 0.3s ease;
             font-weight: 500;
-            position: relative;
-            z-index: 1;
         }
 
         .tool-link:hover {
@@ -285,24 +263,16 @@
             .header h1 {
                 font-size: 2rem;
             }
-
             #searchInput {
                 width: 250px;
             }
-
             .tools-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-
-            .filter-buttons {
-                margin-top: 10px;
-            }
         }
 
-        .hidden {
-            display: none;
-        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -312,7 +282,7 @@
     </div>
 
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search tools... (e.g., subdomain, scanner, XSS)" />
+        <input type="text" id="searchInput" placeholder="Search tools..." onkeyup="searchTools()" />
         <div class="filter-buttons">
             <button class="filter-btn active" onclick="filterCategory('all')">All</button>
             <button class="filter-btn" onclick="filterCategory('recon')">Recon</button>
@@ -327,7 +297,7 @@
             <h2>📊 Tools Statistics</h2>
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span class="stat-number" id="totalTools">200+</span>
+                    <span class="stat-number">200+</span>
                     <span>Total Tools</span>
                 </div>
                 <div class="stat-item">
@@ -345,11 +315,10 @@
             </div>
         </div>
 
-        <!-- Recon Section -->
+        <!-- Subdomain Enumeration -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                🔍 Subdomain Enumeration
-                <span class="toggle-icon">▼</span>
+                🔍 Subdomain Enumeration <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
@@ -364,23 +333,43 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">massdns</div>
-                    <div class="tool-description">High-performance DNS stub resolver for bulk lookups and reconnaissance</div>
+                    <div class="tool-description">A high-performance DNS stub resolver for bulk lookups and reconnaissance</div>
                     <a href="https://github.com/blechschmidt/massdns" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">Findomain</div>
-                    <div class="tool-description">The fastest and cross-platform subdomain enumerator</div>
+                    <div class="tool-description">The fastest and cross-platform subdomain enumerator, do not waste your time</div>
                     <a href="https://github.com/Findomain/Findomain" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">Sudomy</div>
-                    <div class="tool-description">Subdomain enumeration tool for automated reconnaissance</div>
+                    <div class="tool-description">Sudomy is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance</div>
                     <a href="https://github.com/Screetsec/Sudomy" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">chaos-client</div>
                     <div class="tool-description">Go client to communicate with Chaos DNS API</div>
                     <a href="https://github.com/projectdiscovery/chaos-client" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">domained</div>
+                    <div class="tool-description">Multi Tool Subdomain Enumeration</div>
+                    <a href="https://github.com/TypeError/domained" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">shuffledns</div>
+                    <div class="tool-description">shuffleDNS is a wrapper around massdns written in go that allows you to enumerate valid subdomains</div>
+                    <a href="https://github.com/projectdiscovery/shuffledns" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">censys-subdomain-finder</div>
+                    <div class="tool-description">Perform subdomain enumeration using the certificate transparency logs from Censys</div>
+                    <a href="https://github.com/christophetd/censys-subdomain-finder" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">Turbolist3r</div>
+                    <div class="tool-description">Subdomain enumeration tool with analysis features for discovered domains</div>
+                    <a href="https://github.com/fleetcaptain/Turbolist3r" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">subfinder</div>
@@ -399,18 +388,23 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">dnsx</div>
-                    <div class="tool-description">Fast and multi-purpose DNS toolkit allow to run multiple DNS queries</div>
+                    <div class="tool-description">Dnsx is a fast and multi-purpose DNS toolkit allow to run multiple DNS queries</div>
                     <a href="https://github.com/projectdiscovery/dnsx" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
-                    <div class="tool-name">shuffledns</div>
-                    <div class="tool-description">shuffleDNS is a wrapper around massdns written in go for subdomain enumeration</div>
-                    <a href="https://github.com/projectdiscovery/shuffledns" class="tool-link" target="_blank">Install / View</a>
+                    <div class="tool-name">hakrevdns</div>
+                    <div class="tool-description">Small, fast tool for performing reverse DNS lookups en masse</div>
+                    <a href="https://github.com/hakluke/hakrevdns" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">crtndstry</div>
                     <div class="tool-description">Yet another subdomain finder</div>
                     <a href="https://github.com/nahamsec/crtndstry" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">sub3suite</div>
+                    <div class="tool-description">A research-grade suite of tools for subdomain enumeration, intelligence gathering</div>
+                    <a href="https://github.com/3nock/sub3suite" class="tool-link" target="_blank">Install / View</a>
                 </div>
             </div>
         </div>
@@ -418,8 +412,7 @@
         <!-- Port Scanning -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                🌐 Port Scanning
-                <span class="toggle-icon">▼</span>
+                🌐 Port Scanning <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
@@ -443,6 +436,11 @@
                     <a href="https://github.com/nmap/nmap" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
+                    <div class="tool-name">sandmap</div>
+                    <div class="tool-description">Nmap on steroids. Simple CLI with the ability to run pure Nmap engine</div>
+                    <a href="https://github.com/trimstray/sandmap" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
                     <div class="tool-name">ScanCannon</div>
                     <div class="tool-description">Combines the speed of masscan with the reliability and detailed enumeration of nmap</div>
                     <a href="https://github.com/johnnyxmas/ScanCannon" class="tool-link" target="_blank">Install / View</a>
@@ -453,19 +451,23 @@
         <!-- Screenshots -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                📸 Screenshots
-                <span class="toggle-icon">▼</span>
+                📸 Screenshots <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
                     <div class="tool-name">EyeWitness</div>
-                    <div class="tool-description">Take screenshots of websites, provide server header info, and identify default credentials</div>
+                    <div class="tool-description">EyeWitness is designed to take screenshots of websites, provide some server header info, and identify default credentials</div>
                     <a href="https://github.com/FortyNorthSecurity/EyeWitness" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">aquatone</div>
-                    <div class="tool-description">Tool for visual inspection of websites across a large amount of hosts</div>
+                    <div class="tool-description">Aquatone is a tool for visual inspection of websites across a large amount of hosts</div>
                     <a href="https://github.com/michenriksen/aquatone" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">screenshoteer</div>
+                    <div class="tool-description">Make website screenshots and mobile emulations from the command line</div>
+                    <a href="https://github.com/vladocar/screenshoteer" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">gowitness</div>
@@ -474,13 +476,18 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">WitnessMe</div>
-                    <div class="tool-description">Web Inventory tool, takes screenshots using Pyppeteer (headless Chrome/Chromium)</div>
+                    <div class="tool-description">Web Inventory tool, takes screenshots of webpages using Pyppeteer</div>
                     <a href="https://github.com/byt3bl33d3r/WitnessMe" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
-                    <div class="tool-name">screenshoteer</div>
-                    <div class="tool-description">Make website screenshots and mobile emulations from the command line</div>
-                    <a href="https://github.com/vladocar/screenshoteer" class="tool-link" target="_blank">Install / View</a>
+                    <div class="tool-name">eyeballer</div>
+                    <div class="tool-description">Convolutional neural network for analyzing pentest screenshots</div>
+                    <a href="https://github.com/BishopFox/eyeballer" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">httpscreenshot</div>
+                    <div class="tool-description">HTTPScreenshot is a tool for grabbing screenshots and HTML of large numbers of websites</div>
+                    <a href="https://github.com/breenmachine/httpscreenshot/" class="tool-link" target="_blank">Install / View</a>
                 </div>
             </div>
         </div>
@@ -488,8 +495,7 @@
         <!-- Technologies -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                ⚙️ Technologies Detection
-                <span class="toggle-icon">▼</span>
+                ⚙️ Technologies Detection <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
@@ -499,7 +505,7 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">webanalyze</div>
-                    <div class="tool-description">Port of Wappalyzer to automate mass scanning</div>
+                    <div class="tool-description">Port of Wappalyzer (uncovers technologies used on websites) to automate mass scanning</div>
                     <a href="https://github.com/rverton/webanalyze" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
@@ -509,12 +515,12 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">httpx</div>
-                    <div class="tool-description">Fast and multi-purpose HTTP toolkit</div>
+                    <div class="tool-description">httpx is a fast and multi-purpose HTTP toolkit allows to run multiple probers</div>
                     <a href="https://github.com/projectdiscovery/httpx" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">fingerprintx</div>
-                    <div class="tool-description">Standalone utility for service discovery on open ports</div>
+                    <div class="tool-description">fingerprintx is a standalone utility for service discovery on open ports</div>
                     <a href="https://github.com/praetorian-inc/fingerprintx" class="tool-link" target="_blank">Install / View</a>
                 </div>
             </div>
@@ -523,8 +529,7 @@
         <!-- Content Discovery -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                📂 Content Discovery
-                <span class="toggle-icon">▼</span>
+                📂 Content Discovery <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
@@ -554,7 +559,7 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">hakrawler</div>
-                    <div class="tool-description">Simple, fast web crawler designed for easy, quick discovery of endpoints</div>
+                    <div class="tool-description">Simple, fast web crawler designed for easy, quick discovery of endpoints and assets</div>
                     <a href="https://github.com/hakluke/hakrawler" class="tool-link" target="_blank">Install / View</a>
                 </div>
             </div>
@@ -563,8 +568,7 @@
         <!-- Links -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                🔗 Links Discovery
-                <span class="toggle-icon">▼</span>
+                🔗 Links Discovery <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
@@ -579,7 +583,7 @@
                 </div>
                 <div class="tool-card">
                     <div class="tool-name">gau</div>
-                    <div class="tool-description">Fetch known URLs from AlienVault's Open Threat Exchange, Wayback Machine</div>
+                    <div class="tool-description">Fetch known URLs from AlienVault's Open Threat Exchange, the Wayback Machine, and Common Crawl</div>
                     <a href="https://github.com/lc/gau" class="tool-link" target="_blank">Install / View</a>
                 </div>
                 <div class="tool-card">
@@ -593,11 +597,26 @@
         <!-- Parameters -->
         <div class="category recon" data-category="recon">
             <div class="category-header" onclick="toggleCategory(this)">
-                🔍 Parameters Discovery
-                <span class="toggle-icon">▼</span>
+                🔧 Parameters Discovery <span class="toggle-icon">▼</span>
             </div>
             <div class="tools-grid">
                 <div class="tool-card">
                     <div class="tool-name">Arjun</div>
                     <div class="tool-description">HTTP parameter discovery suite</div>
-                    <a href="https://github.com/s0md3v
+                    <a href="https://github.com/s0md3v/Arjun" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">ParamSpider</div>
+                    <div class="tool-description">Mining parameters from dark corners of Web Archives</div>
+                    <a href="https://github.com/devanshbatham/ParamSpider" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">x8</div>
+                    <div class="tool-description">Hidden parameters discovery suite written in Rust</div>
+                    <a href="https://github.com/Sh1Yo/x8" class="tool-link" target="_blank">Install / View</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">param-miner</div>
+                    <div class="tool-description">This extension identifies hidden, unlinked parameters</div>
+                    <a href="https://github.com/PortSwigger/param-miner" class="tool-link" target="_blank">Install / View</a>
+                </div>
